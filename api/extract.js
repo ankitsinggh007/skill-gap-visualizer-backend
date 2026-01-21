@@ -16,7 +16,11 @@ export default async function handler(req, res) {
 
     const result = await runExtractionEngine(resumeText);
 
-    return res.status(200).json(result);
+    // Return only the locked contract fields
+    return res.status(200).json({
+      extractedSkills: result.extractedSkills,
+      inferredSkills: result.inferredSkills,
+    });
   } catch (err) {
     console.error("Serverless error:", err);
     return res
