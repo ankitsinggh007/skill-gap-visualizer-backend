@@ -1,0 +1,116 @@
+{
+  "react": {
+    "explicit": ["react.js", "reactjs"],
+    "weak": ["react framework", "react library", "frontend react"]
+  },
+
+  "jsx": {
+    "explicit": ["jsx syntax", "react jsx"],
+    "weak": ["component markup", "ui structure", "jsx code"]
+  },
+
+  "props": {
+    "explicit": ["component props", "passing props"],
+    "weak": ["prop drilling"]
+  },
+
+  "react state": {
+    "explicit": ["usestate", "local state"],
+    "weak": ["component state", "react state"]
+  },
+
+  "hooks": {
+    "explicit": ["useeffect", "usestate", "custom hook"],
+    "weak": ["react hooks", "hook logic", "react hook patterns"]
+  },
+
+  "context api": {
+    "explicit": ["react context", "context provider"],
+    "weak": ["context usage", "context based state"]
+  },
+
+  "lifecycle understanding": {
+    "explicit": ["mount", "update", "unmount"],
+    "weak": ["component lifecycle", "lifecycle methods"]
+  },
+
+  "conditional rendering": {
+    "explicit": ["ternary", "ternary operator"],
+    "weak": ["conditional ui", "show hide logic"]
+  },
+
+  "forms & validation": {
+    "explicit": ["input validation", "controlled inputs"],
+    "weak": ["form validation", "form handling", "form errors"]
+  },
+
+  "lists & keys": {
+    "explicit": ["list rendering", "map rendering"],
+    "weak": ["list keys", "unique keys"]
+  },
+
+  "error boundaries": {
+    "explicit": ["componentdidcatch"],
+    "weak": ["fallback ui", "error fallback"]
+  },
+
+  "async/await & promises": {
+    "explicit": ["async/await", "async await", "promise handling"],
+    "weak": ["async logic", "api integration", "fetch request"]
+  },
+
+  "react router": {
+    "explicit": ["useparams", "usenavigate", "nested routes"],
+    "weak": ["routing", "route handling", "navigation flow"]
+  },
+
+  "redux toolkit": {
+    "explicit": ["redux", "rtk", "redux slice", "redux toolkit"],
+    "weak": ["global state", "app state"]
+  },
+
+  "state management patterns": {
+    "explicit": ["lifted state", "shared state", "global store"],
+    "weak": ["state pattern"]
+  },
+
+  "react query": {
+    "explicit": ["react-query", "swr", "react query"],
+    "weak": ["server state", "data caching"]
+  },
+
+  "vite/webpack basics": {
+    "explicit": ["vite config", "webpack config"],
+    "weak": ["bundler", "module bundler", "build tool"]
+  },
+
+  "eslint/prettier": {
+    "explicit": ["linter", "autofix"],
+    "weak": ["code rules", "formatter", "code formatting"]
+  },
+
+  "package managers": {
+    "explicit": ["npm", "yarn", "pnpm"],
+    "weak": ["package installation", "install packages"]
+  },
+
+  "git & branching": {
+    "explicit": ["git", "git workflow"],
+    "weak": ["version control", "branch strategy", "commit history"]
+  },
+
+  "communication": {
+    "explicit": ["communicated", "presented"],
+    "weak": ["communication skills", "collaborated"]
+  },
+
+  "team collaboration": {
+    "explicit": ["teamwork"],
+    "weak": ["working with designers", "working with backend"]
+  },
+
+  "problem breakdown": {
+    "explicit": ["debug", "issue resolution"],
+    "weak": ["problem solving", "approach thinking"]
+  }
+}

@@ -1,0 +1,237 @@
+{
+  "role": "react",
+  "companyType": "unicorn",
+  "level": "junior",
+
+  "expectedExperienceRange": { "min": 0, "max": 1 },
+
+  "expectedTools": [
+    "git",
+    "github",
+    "vite",
+    "webpack",
+    "eslint",
+    "prettier",
+    "postman",
+    "react-router",
+    "redux",
+    "rtk"
+  ],
+
+  "experienceScoreModule": {
+    "underQualifiedPenalty": 0.1,
+    "overQualifiedNoBonus": true,
+    "perfectMatchBonus": 0.05
+  },
+
+  "categories": [
+    {
+      "name": "JavaScript Fundamentals",
+      "weight": 0.25,
+      "skills": [
+        {
+          "name": "Variables & Scope",
+          "weight": 0.06,
+          "keywords": ["let", "const", "var", "scope"],
+          "description": "Basic understanding of JS scoping."
+        },
+        {
+          "name": "Closures",
+          "weight": 0.12,
+          "keywords": ["closure", "lexical", "inner function"],
+          "description": "Ability to explain closure behaviour."
+        },
+        {
+          "name": "Async/Await & Promises",
+          "weight": 0.18,
+          "keywords": ["async", "await", "promise", "fetch"],
+          "description": "Core async flow for API-driven apps."
+        },
+        {
+          "name": "Event Loop",
+          "weight": 0.15,
+          "keywords": ["event loop", "call stack", "microtask"],
+          "description": "Basic conceptual understanding."
+        },
+        {
+          "name": "Hoisting",
+          "weight": 0.05,
+          "keywords": ["hoist", "var hoisting"],
+          "description": "Fundamental JS execution model."
+        },
+        {
+          "name": "Prototypes",
+          "weight": 0.13,
+          "keywords": ["prototype", "__proto__", "inheritance"],
+          "description": "Baseline JS object model understanding."
+        },
+        {
+          "name": "Array & Object APIs",
+          "weight": 0.1,
+          "keywords": ["map", "filter", "reduce", "spread"],
+          "description": "Essential for UI data transformations."
+        },
+        {
+          "name": "Error Handling",
+          "weight": 0.06,
+          "keywords": ["try", "catch", "error"],
+          "description": "Ability to handle runtime errors."
+        }
+      ]
+    },
+
+    {
+      "name": "React Core",
+      "weight": 0.35,
+      "skills": [
+        {
+          "name": "JSX",
+          "weight": 0.05,
+          "keywords": ["jsx", "component"],
+          "description": "Rendering UI in React."
+        },
+        {
+          "name": "Props",
+          "weight": 0.05,
+          "keywords": ["props", "prop drilling"],
+          "description": "Data flow fundamentals."
+        },
+        {
+          "name": "React State",
+          "weight": 0.1,
+          "keywords": ["useState", "local state", "state hook"],
+          "description": "Component-level state management in React."
+        },
+        {
+          "name": "Hooks",
+          "weight": 0.2,
+          "keywords": ["useEffect", "useState", "custom hooks"],
+          "description": "Junior dev should understand basic hook usage."
+        },
+        {
+          "name": "Context API",
+          "weight": 0.1,
+          "keywords": ["context", "provider"],
+          "description": "Simple global state sharing."
+        },
+        {
+          "name": "Lifecycle Understanding",
+          "weight": 0.1,
+          "keywords": ["mount", "update", "unmount"],
+          "description": "Basic lifecycle awareness is expected."
+        },
+        {
+          "name": "Conditional Rendering",
+          "weight": 0.05,
+          "keywords": ["conditional", "ternary"],
+          "description": "Show/hide UI using logical rendering."
+        },
+        {
+          "name": "Forms & Validation",
+          "weight": 0.1,
+          "keywords": ["form", "input", "validation"],
+          "description": "Handling user input properly."
+        },
+        {
+          "name": "Lists & Keys",
+          "weight": 0.05,
+          "keywords": ["key", "list", "map render"],
+          "description": "Correct key usage in lists."
+        },
+        {
+          "name": "Error Boundaries",
+          "weight": 0.05,
+          "keywords": ["error boundary", "fallback UI"],
+          "description": "Baseline knowledge of crash handling."
+        }
+      ]
+    },
+
+    {
+      "name": "React Ecosystem",
+      "weight": 0.2,
+      "skills": [
+        {
+          "name": "React Router",
+          "weight": 0.2,
+          "keywords": ["useNavigate", "useParams", "route"],
+          "description": "Basic navigation patterns."
+        },
+        {
+          "name": "Redux/RTK",
+          "weight": 0.4,
+          "keywords": ["redux", "rtk", "slice", "store"],
+          "description": "Fundamental state management."
+        },
+        {
+          "name": "State Management Patterns",
+          "weight": 0.2,
+          "keywords": ["state pattern", "global state"],
+          "description": "Understanding when to lift or share state."
+        },
+        {
+          "name": "React Query",
+          "weight": 0.2,
+          "keywords": ["react-query", "SWR", "cache"],
+          "description": "Basic knowledge of server state."
+        }
+      ]
+    },
+
+    {
+      "name": "Tooling & Build",
+      "weight": 0.1,
+      "skills": [
+        {
+          "name": "Vite/Webpack Basics",
+          "weight": 0.25,
+          "keywords": ["vite", "webpack"],
+          "description": "Starter bundler knowledge."
+        },
+        {
+          "name": "ESLint/Prettier",
+          "weight": 0.25,
+          "keywords": ["eslint", "prettier"],
+          "description": "Maintaining code quality."
+        },
+        {
+          "name": "Package Managers",
+          "weight": 0.1,
+          "keywords": ["npm", "yarn", "pnpm"],
+          "description": "Installing and managing packages."
+        },
+        {
+          "name": "Git & Branching",
+          "weight": 0.4,
+          "keywords": ["git", "branch", "commit"],
+          "description": "Junior must know basic Git operations."
+        }
+      ]
+    },
+
+    {
+      "name": "Soft Skills",
+      "weight": 0.1,
+      "skills": [
+        {
+          "name": "Communication",
+          "weight": 0.4,
+          "keywords": ["communicated", "presented", "collaborated"],
+          "description": "Junior must communicate clearly."
+        },
+        {
+          "name": "Team Collaboration",
+          "weight": 0.3,
+          "keywords": ["team", "collaboration"],
+          "description": "Ability to work with teammates."
+        },
+        {
+          "name": "Problem Breakdown",
+          "weight": 0.3,
+          "keywords": ["breakdown", "approach", "debug"],
+          "description": "Basic problem-solving ability."
+        }
+      ]
+    }
+  ]
+}

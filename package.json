@@ -1,0 +1,11 @@
+{
+  "name": "skill-gap-visualizer-backend",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:extract": "node tests/runExtractionTest.js"
+  },
+  "dependencies": {
+    "openai": "^6.9.1"
+  }
+}

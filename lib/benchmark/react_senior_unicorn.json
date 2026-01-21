@@ -1,0 +1,236 @@
+{
+  "role": "react",
+  "companyType": "unicorn",
+  "level": "senior",
+
+  "expectedExperienceRange": { "min": 2, "max": 5 },
+
+  "expectedTools": [
+    "git", "github", "vite", "webpack", "eslint", "prettier",
+    "jest", "rtl", "postman", "react-router", "redux", "rtk",
+    "react-query", "swr"
+  ],
+
+  "experienceScoreModule": {
+    "underQualifiedPenalty": 0.25,
+    "overQualifiedNoBonus": true,
+    "perfectMatchBonus": 0.10
+  },
+
+  "categories": [
+    {
+      "name": "JavaScript Fundamentals",
+      "weight": 0.25,
+      "skills": [
+        {
+          "name": "Advanced Scope & Closures",
+          "weight": 0.10,
+          "keywords": ["closure", "lexical scope", "function scope"],
+          "description": "Senior devs must show strong closure usage in abstractions."
+        },
+        {
+          "name": "Deep Async Patterns",
+          "weight": 0.18,
+          "keywords": ["async", "await", "promises", "microtask", "event loop"],
+          "description": "Complex async flows and promise orchestration expected."
+        },
+        {
+          "name": "Event Loop & Performance Bottlenecks",
+          "weight": 0.15,
+          "keywords": ["event loop", "task queue", "performance", "debounce", "throttle"],
+          "description": "Identifying rendering delays, avoiding blocking operations."
+        },
+        {
+          "name": "Prototypal Inheritance & Object Model",
+          "weight": 0.15,
+          "keywords": ["prototype", "__proto__", "constructor"],
+          "description": "Understanding JS object model for debugging & optimizations."
+        },
+        {
+          "name": "Advanced Array/Object APIs",
+          "weight": 0.12,
+          "keywords": ["map", "filter", "reduce", "immutability", "spread"],
+          "description": "Transformations without mutation, pipeline thinking."
+        },
+        {
+          "name": "Error Handling Patterns",
+          "weight": 0.08,
+          "keywords": ["try", "catch", "error boundary", "fallback"],
+          "description": "Resilient UI requires defensive async error handling."
+        },
+        {
+          "name": "Module System & Bundling Awareness",
+          "weight": 0.12,
+          "keywords": ["import", "export", "tree shaking", "code splitting"],
+          "description": "Seniors must understand how bundlers affect performance."
+        },
+        {
+          "name": "Memory & Garbage Collection Basics",
+          "weight": 0.10,
+          "keywords": ["memory leak", "gc", "cleanup", "unsubscribe"],
+          "description": "Avoiding stale subscriptions and leaky components."
+        }
+      ]
+    },
+
+    {
+      "name": "React Core",
+      "weight": 0.35,
+      "skills": [
+        {
+          "name": "Advanced Hooks Architecture",
+          "weight": 0.20,
+          "keywords": ["custom hooks", "stale closure", "useEffect cleanup"],
+          "description": "Building reusable, stable abstractions using hooks."
+        },
+        {
+          "name": "Component Composition Patterns",
+          "weight": 0.12,
+          "keywords": ["compound components", "render props", "slots"],
+          "description": "Composing multiple components for scalable design."
+        },
+        {
+          "name": "Performance Optimization",
+          "weight": 0.18,
+          "keywords": ["useMemo", "useCallback", "memo", "re-renders"],
+          "description": "Diagnosing and preventing unnecessary renders."
+        },
+        {
+          "name": "Concurrent Features",
+          "weight": 0.10,
+          "keywords": ["Suspense", "transitions", "startTransition"],
+          "description": "Modern React performance primitives."
+        },
+        {
+          "name": "State Management Internals",
+          "weight": 0.08,
+          "keywords": ["reducer", "context", "provider", "re-renders"],
+          "description": "Deep understanding of state flow and pitfalls."
+        },
+        {
+          "name": "Forms Architecture",
+          "weight": 0.08,
+          "keywords": ["controlled", "uncontrolled", "validation"],
+          "description": "Senior React devs build stable form ecosystems."
+        },
+        {
+          "name": "Error Boundaries",
+          "weight": 0.06,
+          "keywords": ["componentDidCatch", "fallback UI"],
+          "description": "Proper handling of runtime UI crashes."
+        },
+        {
+          "name": "Large Component Refactoring Patterns",
+          "weight": 0.08,
+          "keywords": ["refactor", "split component", "abstraction"],
+          "description": "Turning complex UI into clean, maintainable architecture."
+        },
+        {
+          "name": "Controlled vs Uncontrolled Components",
+          "weight": 0.10,
+          "keywords": ["controlled", "uncontrolled", "refs"],
+          "description": "Choosing the right model for form-heavy UI."
+        }
+      ]
+    },
+
+    {
+      "name": "React Ecosystem",
+      "weight": 0.20,
+      "skills": [
+        {
+          "name": "React Router Advanced Usage",
+          "weight": 0.20,
+          "keywords": ["nested routes", "loaders", "actions"],
+          "description": "Correct routing architecture in large-scale apps."
+        },
+        {
+          "name": "Redux/RTK Advanced",
+          "weight": 0.30,
+          "keywords": ["middleware", "entity adapter", "RTK query"],
+          "description": "Senior FE must master predictable global state."
+        },
+        {
+          "name": "State Machines",
+          "weight": 0.20,
+          "keywords": ["xstate", "state machine", "finite states"],
+          "description": "Used heavily in complex UI flows."
+        },
+        {
+          "name": "Server State Libraries",
+          "weight": 0.15,
+          "keywords": ["react-query", "SWR", "cache"],
+          "description": "Modern server-state management expected at senior level."
+        },
+        {
+          "name": "Design Systems",
+          "weight": 0.15,
+          "keywords": ["design system", "component library", "tokens"],
+          "description": "Scalable UI architecture signals maturity."
+        }
+      ]
+    },
+
+    {
+      "name": "Tooling & Build",
+      "weight": 0.10,
+      "skills": [
+        {
+          "name": "Bundle Optimization",
+          "weight": 0.25,
+          "keywords": ["tree shaking", "lazy load", "code split"],
+          "description": "Reducing JS bundle size is key to performance."
+        },
+        {
+          "name": "CI/CD Awareness",
+          "weight": 0.15,
+          "keywords": ["pipeline", "preview deployment", "github actions"],
+          "description": "Senior devs understand deployment lifecycle."
+        },
+        {
+          "name": "Testing (Jest, RTL)",
+          "weight": 0.20,
+          "keywords": ["jest", "react testing library", "mock"],
+          "description": "Unit & integration testing expected at senior roles."
+        },
+        {
+          "name": "Lint Rules & Automation",
+          "weight": 0.10,
+          "keywords": ["eslint", "prettier", "rules"],
+          "description": "Maintaining code quality across team."
+        },
+        {
+          "name": "Git Strategy",
+          "weight": 0.30,
+          "keywords": ["branching", "PR", "merge strategy"],
+          "description": "PR hygiene & branching strategy required."
+        }
+      ]
+    },
+
+    {
+      "name": "Soft Skills",
+      "weight": 0.10,
+      "skills": [
+        {
+          "name": "Communication & Documentation",
+          "weight": 0.35,
+          "keywords": ["documented", "communicated", "explained"],
+          "description": "Clear communication is mandatory at senior level."
+        },
+        {
+          "name": "System Thinking",
+          "weight": 0.35,
+          "keywords": ["architecture", "breakdown", "design"],
+          "description": "Ability to break large UI problems into modules."
+        },
+        {
+          "name": "Leadership & Mentorship",
+          "weight": 0.30,
+          "keywords": ["mentored", "led", "guided"],
+          "description": "Signals readiness for senior ownership."
+        }
+      ]
+    }
+  ]
+}
