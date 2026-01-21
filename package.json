@@ -3,7 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test:extract": "node tests/runExtractionTest.js"
+    "test:extract": "node tests/runExtractionTest.js",
+    "test:contract": "node tests/contract-smoke.test.js"
   },
   "dependencies": {
     "openai": "^6.9.1"
