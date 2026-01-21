@@ -2,6 +2,8 @@
 import { analyzeResume } from "../lib/analyze/index.js";
 import { HTTP_ERRORS, sendError } from "../lib/http/error.js";
 
+const MAX_RESUME_CHARS = 100_000;
+
 /**
  * Vercel Serverless API Route
  * Method: POST
@@ -36,6 +38,15 @@ export default async function handler(req, res) {
         HTTP_ERRORS.VALIDATION_ERROR,
         "resumeText is required and must be a string",
         { received: typeof resumeText },
+      );
+    }
+
+    if (resumeText.length > MAX_RESUME_CHARS) {
+      return sendError(
+        res,
+        HTTP_ERRORS.PAYLOAD_TOO_LARGE,
+        `resumeText exceeds maximum size of ${MAX_RESUME_CHARS} characters`,
+        { maxChars: MAX_RESUME_CHARS, receivedChars: resumeText.length },
       );
     }
 
