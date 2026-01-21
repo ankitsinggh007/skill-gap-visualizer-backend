@@ -1,6 +1,10 @@
 // /api/analyze-resume.js
 import { analyzeResume } from "../lib/analyze/index.js";
 import { HTTP_ERRORS, sendError } from "../lib/http/error.js";
+import {
+  normalizeSkillArrays,
+  SkillArrayError,
+} from "../lib/analyze/normalize/normalizeSkillArrays.js";
 
 const MAX_RESUME_CHARS = 100_000;
 
@@ -56,11 +60,31 @@ export default async function handler(req, res) {
     const companyType = "unicorn";
     const experienceYears = 0;
 
+    // Validate and normalize skill arrays
+    let normalizedSkills;
+    try {
+      normalizedSkills = normalizeSkillArrays({
+        extractedSkills,
+        inferredSkills,
+      });
+    } catch (err) {
+      if (err instanceof SkillArrayError) {
+        return sendError(
+          res,
+          HTTP_ERRORS.BAD_REQUEST,
+          "Invalid skills input",
+          err.details,
+        );
+      }
+      // Re-throw unknown errors to be caught by outer try/catch
+      throw err;
+    }
+
     // Call the orchestrator (Layer A → B → C → D)
     const result = await analyzeResume({
       resumeText,
-      extractedSkills,
-      inferredSkills,
+      extractedSkills: normalizedSkills.extractedSkills,
+      inferredSkills: normalizedSkills.inferredSkills,
       role,
       level,
       companyType,
