@@ -1,5 +1,6 @@
 // /api/analyze-resume.js
 import { analyzeResume } from "../lib/analyze/index.js";
+import { HTTP_ERRORS, sendError } from "../lib/http/error.js";
 
 /**
  * Vercel Serverless API Route
@@ -14,10 +15,13 @@ export default async function handler(req, res) {
   try {
     // Only allow POST
     if (req.method !== "POST") {
-      return res.status(405).json({
-        error: "Method Not Allowed",
-        message: "Use POST /api/analyze-resume",
-      });
+      res.setHeader("Allow", "POST");
+      return sendError(
+        res,
+        HTTP_ERRORS.METHOD_NOT_ALLOWED,
+        "Use POST /api/analyze-resume",
+        { method: req.method },
+      );
     }
 
     // Parse JSON body
@@ -27,9 +31,12 @@ export default async function handler(req, res) {
 
     // Validation
     if (!resumeText || typeof resumeText !== "string") {
-      return res.status(400).json({
-        error: "resumeText is required and must be a string.",
-      });
+      return sendError(
+        res,
+        HTTP_ERRORS.VALIDATION_ERROR,
+        "resumeText is required and must be a string",
+        { received: typeof resumeText },
+      );
     }
 
     // Hardcoded defaults (not configurable per contract)
@@ -51,7 +58,12 @@ export default async function handler(req, res) {
 
     // Check for errors from orchestrator
     if (result.error) {
-      return res.status(400).json(result);
+      return sendError(res, HTTP_ERRORS.BAD_REQUEST, "Invalid analysis input", {
+        engineError:
+          typeof result.error === "string"
+            ? result.error.slice(0, 500)
+            : result.error,
+      });
     }
 
     // Return exact contract (no success wrapper)
@@ -59,9 +71,11 @@ export default async function handler(req, res) {
   } catch (err) {
     console.error("❌ analyze-resume API Error:", err);
 
-    return res.status(500).json({
-      error: "Internal Server Error",
-      message: err.message,
-    });
+    return sendError(
+      res,
+      HTTP_ERRORS.INTERNAL_ERROR,
+      "Internal server error during analysis",
+      {},
+    );
   }
 }

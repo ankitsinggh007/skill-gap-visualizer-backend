@@ -1,17 +1,30 @@
 // /api/extract.js
 
 import { runExtractionEngine } from "../lib/extraction/extractorEngine.js";
+import { HTTP_ERRORS, sendError } from "../lib/http/error.js";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
+    res.setHeader("Allow", "POST");
+    return sendError(
+      res,
+      HTTP_ERRORS.METHOD_NOT_ALLOWED,
+      "Only POST method is allowed",
+      { method: req.method },
+    );
   }
 
   try {
-    const { resumeText } = req.body;
+    const body = req.body || {};
+    const { resumeText } = body;
 
     if (!resumeText || typeof resumeText !== "string") {
-      return res.status(400).json({ error: "Invalid resumeText" });
+      return sendError(
+        res,
+        HTTP_ERRORS.VALIDATION_ERROR,
+        "resumeText is required and must be a string",
+        { received: typeof resumeText },
+      );
     }
 
     const result = await runExtractionEngine(resumeText);
@@ -22,9 +35,12 @@ export default async function handler(req, res) {
       inferredSkills: result.inferredSkills,
     });
   } catch (err) {
-    console.error("Serverless error:", err);
-    return res
-      .status(500)
-      .json({ error: "Server error", message: err.message });
+    console.error("Extract API error:", err);
+    return sendError(
+      res,
+      HTTP_ERRORS.INTERNAL_ERROR,
+      "Internal server error during extraction",
+      {},
+    );
   }
 }
