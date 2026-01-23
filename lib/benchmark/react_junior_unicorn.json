@@ -105,7 +105,7 @@
         {
           "name": "Hooks",
           "weight": 0.2,
-          "keywords": ["useEffect", "useState", "custom hooks"],
+          "keywords": ["useEffect", "useState", "useContext", "custom hooks"],
           "description": "Junior dev should understand basic hook usage."
         },
         {
@@ -154,7 +154,7 @@
         {
           "name": "React Router",
           "weight": 0.2,
-          "keywords": ["useNavigate", "useParams", "route"],
+          "keywords": ["useNavigate", "useParams", "useRoutes", "Link"],
           "description": "Basic navigation patterns."
         },
         {

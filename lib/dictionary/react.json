@@ -20,8 +20,15 @@
   },
 
   "hooks": {
-    "explicit": ["useeffect", "usestate", "custom hook"],
-    "weak": ["react hooks", "hook logic", "react hook patterns"]
+    "explicit": [
+      "useeffect",
+      "usestate",
+      "usecontext",
+      "use effect",
+      "use state",
+      "custom hook"
+    ],
+    "weak": ["react hook, react hooks patterns"]
   },
 
   "context api": {
@@ -61,7 +68,7 @@
 
   "react router": {
     "explicit": ["useparams", "usenavigate", "nested routes"],
-    "weak": ["routing", "route handling", "navigation flow"]
+    "weak": ["react routing", "spa navigation", "route-based navigation"]
   },
 
   "redux toolkit": {
