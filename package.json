@@ -4,7 +4,10 @@
   "type": "module",
   "scripts": {
     "test:extract": "node tests/runExtractionTest.js",
-    "test:contract": "node tests/contract-smoke.test.js"
+    "test:contract": "node tests/contract-smoke.test.js",
+    "test:fixtures": "node tests/business-fixtures.snapshot.test.js",
+    "test:biz:fixtures": "node tests/business-fixtures.snapshot.test.js",
+    "test:brain": "node tests/brain-qa.test.js"
   },
   "dependencies": {
     "openai": "^6.9.1"
