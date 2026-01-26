@@ -6,7 +6,10 @@ import {
   SkillArrayError,
 } from "../lib/analyze/normalize/normalizeSkillArrays.js";
 
-const MAX_RESUME_CHARS = 100_000;
+const MAX_RESUME_CHARS = 200_000;
+const ALLOWED_ROLES = new Set(["react", "frontend", "backend"]);
+const ALLOWED_LEVELS = new Set(["junior", "mid", "senior"]);
+const ALLOWED_COMPANY_TYPES = new Set(["unicorn", "enterprise", "startup"]);
 
 /**
  * Vercel Serverless API Route
@@ -15,7 +18,7 @@ const MAX_RESUME_CHARS = 100_000;
  * Input: { resumeText, extractedSkills, inferredSkills }
  * Output: Exact contract response (no success wrapper)
  *
- * Note: role, level, companyType, and experienceYears are hardcoded (not configurable)
+ * Note: role, level, companyType, and experienceYears are configurable (not hardcoded)
  */
 export default async function handler(req, res) {
   try {
@@ -33,7 +36,25 @@ export default async function handler(req, res) {
     // Parse JSON body
     const body = req.body || {};
 
-    const { resumeText, extractedSkills = [], inferredSkills = [] } = body;
+    const {
+      resumeText,
+      extractedSkills = [],
+      inferredSkills = [],
+      // configurable defaults (not hardcoded per contract)
+      role = "react",
+      level = "junior",
+      companyType = "unicorn",
+      experienceYears = 0,
+    } = body;
+    const safeRole = ALLOWED_ROLES.has(role) ? role : "react";
+    const safeLevel = ALLOWED_LEVELS.has(level) ? level : "junior";
+    const safeCompanyType = ALLOWED_COMPANY_TYPES.has(companyType)
+      ? companyType
+      : "unicorn";
+    const parsedYears = Number.isFinite(Number(experienceYears))
+      ? Number(experienceYears)
+      : 0;
+    const safeExperienceYears = Math.min(50, Math.max(0, parsedYears));
 
     // Validation
     if (!resumeText || typeof resumeText !== "string") {
@@ -53,12 +74,6 @@ export default async function handler(req, res) {
         { maxChars: MAX_RESUME_CHARS, receivedChars: resumeText.length },
       );
     }
-
-    // Hardcoded defaults (not configurable per contract)
-    const role = "react";
-    const level = "junior";
-    const companyType = "unicorn";
-    const experienceYears = 0;
 
     // Validate and normalize skill arrays
     let normalizedSkills;
@@ -85,10 +100,10 @@ export default async function handler(req, res) {
       resumeText,
       extractedSkills: normalizedSkills.extractedSkills,
       inferredSkills: normalizedSkills.inferredSkills,
-      role,
-      level,
-      companyType,
-      experienceYears,
+      role: safeRole,
+      level: safeLevel,
+      companyType: safeCompanyType,
+      experienceYears: safeExperienceYears,
     });
 
     // Check for errors from orchestrator
