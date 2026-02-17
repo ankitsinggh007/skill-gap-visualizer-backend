@@ -9,6 +9,5 @@ coverage/
 *.log
 .DS_Store
 EOF
-docs/
-# tests/
+
 review.patch
