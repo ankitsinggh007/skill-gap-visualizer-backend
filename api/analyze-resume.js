@@ -198,6 +198,20 @@ export default async function handler(req, res) {
 
     // Check for errors from orchestrator
     if (result.error) {
+      // Distinguish between expected validation errors (400) and unexpected failures (500)
+      // Expected errors: "Resume text is required", "Benchmark not found"
+      // Unexpected errors: "Internal analyzeResume failure"
+      if (result.error === "Internal analyzeResume failure") {
+        return sendError(
+          res,
+          HTTP_ERRORS.INTERNAL_ERROR,
+          "Unexpected error during analysis",
+          {
+            message: result.message || result.error,
+          },
+        );
+      }
+      
       return sendError(res, HTTP_ERRORS.BAD_REQUEST, "Invalid analysis input", {
         engineError:
           typeof result.error === "string"
