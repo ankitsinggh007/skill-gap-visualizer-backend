@@ -3,7 +3,7 @@
 import { runExtractionEngine } from "../lib/extraction/extractorEngine.js";
 import { HTTP_ERRORS, sendError } from "../lib/http/error.js";
 
-const MAX_RESUME_CHARS = 100_000;
+const MAX_RESUME_CHARS = 200_000;
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {

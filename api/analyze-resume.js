@@ -1,5 +1,9 @@
 // /api/analyze-resume.js
 import { analyzeResume } from "../lib/analyze/index.js";
+import {
+  loadBenchmark,
+  listSupportedBenchmarks,
+} from "../lib/benchmark/loader.js";
 import { HTTP_ERRORS, sendError } from "../lib/http/error.js";
 import {
   normalizeSkillArrays,
@@ -7,9 +11,13 @@ import {
 } from "../lib/analyze/normalize/normalizeSkillArrays.js";
 
 const MAX_RESUME_CHARS = 200_000;
-const ALLOWED_ROLES = new Set(["react", "frontend", "backend"]);
-const ALLOWED_LEVELS = new Set(["junior", "mid", "senior"]);
-const ALLOWED_COMPANY_TYPES = new Set(["unicorn", "enterprise", "startup"]);
+const SUPPORTED_BENCHMARKS = listSupportedBenchmarks();
+const DEFAULT_BENCHMARK = SUPPORTED_BENCHMARKS.combinations[0] || {
+  role: "react",
+  level: "junior",
+  companyType: "unicorn",
+};
+const hasOwn = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
 
 /**
  * Vercel Serverless API Route
@@ -40,17 +48,14 @@ export default async function handler(req, res) {
       resumeText,
       extractedSkills = [],
       inferredSkills = [],
-      // configurable defaults (not hardcoded per contract)
-      role = "react",
-      level = "junior",
-      companyType = "unicorn",
       experienceYears = 0,
     } = body;
-    const safeRole = ALLOWED_ROLES.has(role) ? role : "react";
-    const safeLevel = ALLOWED_LEVELS.has(level) ? level : "junior";
-    const safeCompanyType = ALLOWED_COMPANY_TYPES.has(companyType)
-      ? companyType
-      : "unicorn";
+    // configurable defaults (not hardcoded per contract)
+    const role = hasOwn(body, "role") ? body.role : DEFAULT_BENCHMARK.role;
+    const level = hasOwn(body, "level") ? body.level : DEFAULT_BENCHMARK.level;
+    const companyType = hasOwn(body, "companyType")
+      ? body.companyType
+      : DEFAULT_BENCHMARK.companyType;
     const parsedYears = Number.isFinite(Number(experienceYears))
       ? Number(experienceYears)
       : 0;
@@ -72,6 +77,91 @@ export default async function handler(req, res) {
         HTTP_ERRORS.PAYLOAD_TOO_LARGE,
         `resumeText exceeds maximum size of ${MAX_RESUME_CHARS} characters`,
         { maxChars: MAX_RESUME_CHARS, receivedChars: resumeText.length },
+      );
+    }
+
+    if (hasOwn(body, "role") && typeof role !== "string") {
+      return sendError(
+        res,
+        HTTP_ERRORS.VALIDATION_ERROR,
+        "role must be a string",
+        {
+          field: "role",
+          received: role,
+          supportedRoles: SUPPORTED_BENCHMARKS.roles,
+        },
+      );
+    }
+
+    if (hasOwn(body, "level") && typeof level !== "string") {
+      return sendError(
+        res,
+        HTTP_ERRORS.VALIDATION_ERROR,
+        "level must be a string",
+        {
+          field: "level",
+          received: level,
+          supportedLevels: SUPPORTED_BENCHMARKS.levels,
+        },
+      );
+    }
+
+    if (hasOwn(body, "companyType") && typeof companyType !== "string") {
+      return sendError(
+        res,
+        HTTP_ERRORS.VALIDATION_ERROR,
+        "companyType must be a string",
+        {
+          field: "companyType",
+          received: companyType,
+          supportedCompanyTypes: SUPPORTED_BENCHMARKS.companyTypes,
+        },
+      );
+    }
+
+    if (!SUPPORTED_BENCHMARKS.roles.includes(role)) {
+      return sendError(res, HTTP_ERRORS.VALIDATION_ERROR, "Unsupported role", {
+        field: "role",
+        received: role,
+        supportedRoles: SUPPORTED_BENCHMARKS.roles,
+        supportedCombinations: SUPPORTED_BENCHMARKS.combinations,
+      });
+    }
+
+    if (!SUPPORTED_BENCHMARKS.levels.includes(level)) {
+      return sendError(res, HTTP_ERRORS.VALIDATION_ERROR, "Unsupported level", {
+        field: "level",
+        received: level,
+        supportedLevels: SUPPORTED_BENCHMARKS.levels,
+        supportedCombinations: SUPPORTED_BENCHMARKS.combinations,
+      });
+    }
+
+    if (!SUPPORTED_BENCHMARKS.companyTypes.includes(companyType)) {
+      return sendError(
+        res,
+        HTTP_ERRORS.VALIDATION_ERROR,
+        "Unsupported companyType",
+        {
+          field: "companyType",
+          received: companyType,
+          supportedCompanyTypes: SUPPORTED_BENCHMARKS.companyTypes,
+          supportedCombinations: SUPPORTED_BENCHMARKS.combinations,
+        },
+      );
+    }
+
+    if (!loadBenchmark(role, level, companyType)) {
+      return sendError(
+        res,
+        HTTP_ERRORS.VALIDATION_ERROR,
+        "Unsupported benchmark selection",
+        {
+          role,
+          level,
+          companyType,
+          supportedCombinations: SUPPORTED_BENCHMARKS.combinations,
+        },
       );
     }
 
@@ -100,9 +190,9 @@ export default async function handler(req, res) {
       resumeText,
       extractedSkills: normalizedSkills.extractedSkills,
       inferredSkills: normalizedSkills.inferredSkills,
-      role: safeRole,
-      level: safeLevel,
-      companyType: safeCompanyType,
+      role,
+      level,
+      companyType,
       experienceYears: safeExperienceYears,
     });
 

@@ -11,3 +11,4 @@ coverage/
 EOF
 docs/
 tests/
+review.patch
