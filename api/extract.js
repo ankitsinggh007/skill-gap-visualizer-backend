@@ -40,10 +40,15 @@ export default async function handler(req, res) {
 
     const result = await runExtractionEngine(resumeText);
 
-    // Return only the locked contract fields
+    // Return extraction contract fields
     return res.status(200).json({
       extractedSkills: result.extractedSkills,
       inferredSkills: result.inferredSkills,
+      experienceYears: result.experienceYears,
+      educationLevel: result.educationLevel,
+      tools: result.tools,
+      projects: result.projects,
+      rawSummary: result.rawSummary,
     });
   } catch (err) {
     console.error("Extract API error:", err);

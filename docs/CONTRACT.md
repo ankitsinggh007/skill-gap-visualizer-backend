@@ -46,7 +46,12 @@ Success response `200` (exact top-level keys only):
       "skill": "Frontend Framework",
       "source": "Detected keyword \"react\" in resume text."
     }
-  ]
+  ],
+  "experienceYears": null,
+  "educationLevel": "Bachelor's",
+  "tools": ["Git", "Vite"],
+  "projects": ["Inventory Dashboard"],
+  "rawSummary": "Frontend developer with experience in React and tooling."
 }
 ```
 
@@ -57,6 +62,11 @@ Field constraints:
 - `inferredSkills`: array of `{ "skill": string, "source": string }`
 - `inferredSkills[].skill`: trimmed, casing preserved, non-empty
 - `inferredSkills[].source`: trimmed, non-empty
+- `experienceYears`: number or null (clamped 0..50 when provided)
+- `educationLevel`: string (trimmed; empty if unknown)
+- `tools`: array of strings (trimmed, non-empty)
+- `projects`: array of strings (trimmed, non-empty)
+- `rawSummary`: string (trimmed; 1–2 sentences when available)
 
 Error responses:
 | Status | error.code | When |

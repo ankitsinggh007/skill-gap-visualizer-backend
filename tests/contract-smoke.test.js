@@ -45,15 +45,24 @@ async function runTests() {
   });
 
   // Test: 200 response contract shape
-  await test("200: Response has only extractedSkills and inferredSkills", async () => {
+  await test("200: Response has full extraction fields", async () => {
     const req = new MockReq("POST", { resumeText: "JavaScript" });
     const res = new MockRes();
     await extractHandler(req, res);
 
     const keys = Object.keys(res.jsonData);
+    const expectedKeys = [
+      "extractedSkills",
+      "inferredSkills",
+      "experienceYears",
+      "educationLevel",
+      "tools",
+      "projects",
+      "rawSummary",
+    ];
     assert.deepEqual(
       keys.sort(),
-      ["extractedSkills", "inferredSkills"].sort(),
+      expectedKeys.sort(),
       "Top-level keys should match exactly",
     );
   });
@@ -154,6 +163,55 @@ async function runTests() {
         );
       }
     }
+  });
+
+  // Test: experienceYears is number or null
+  await test("200: experienceYears is number or null", async () => {
+    const req = new MockReq("POST", { resumeText: "JavaScript React" });
+    const res = new MockRes();
+    await extractHandler(req, res);
+
+    const v = res.jsonData.experienceYears;
+    assert(
+      v === null || typeof v === "number",
+      "experienceYears must be number or null",
+    );
+  });
+
+  // Test: educationLevel is string
+  await test("200: educationLevel is string", async () => {
+    const req = new MockReq("POST", { resumeText: "JavaScript React" });
+    const res = new MockRes();
+    await extractHandler(req, res);
+
+    assert.strictEqual(
+      typeof res.jsonData.educationLevel,
+      "string",
+      "educationLevel must be string",
+    );
+  });
+
+  // Test: tools/projects are arrays
+  await test("200: tools/projects are arrays", async () => {
+    const req = new MockReq("POST", { resumeText: "JavaScript React" });
+    const res = new MockRes();
+    await extractHandler(req, res);
+
+    assert(Array.isArray(res.jsonData.tools), "tools must be array");
+    assert(Array.isArray(res.jsonData.projects), "projects must be array");
+  });
+
+  // Test: rawSummary is string
+  await test("200: rawSummary is string", async () => {
+    const req = new MockReq("POST", { resumeText: "JavaScript React" });
+    const res = new MockRes();
+    await extractHandler(req, res);
+
+    assert.strictEqual(
+      typeof res.jsonData.rawSummary,
+      "string",
+      "rawSummary must be string",
+    );
   });
 
   // Test: 400 missing resumeText
