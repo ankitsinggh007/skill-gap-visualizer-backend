@@ -7,7 +7,7 @@ import { MockReq, MockRes } from "./_mocks.js";
  * BE-BIZ-001 — Business sanity tests (react/junior/unicorn hardcoded)
  * Locked facts from your proof:
  * - matches has: matchedSkills, weakSignals, missingSkills
- * - atsReadiness.total = 80
+ * - atsReadiness.total = 82
  * - ATS keyword "microtask" exists in benchmark keywords
  * - Hooks weak synonym phrase exists: "react hooks"
  */
@@ -112,7 +112,7 @@ async function test(name, fn) {
     deepNoNaNOrUndefined(r);
   });
 
-  // 3) ATS sensitivity using guaranteed keyword "microtask" (total is locked at 80)
+  // 3) ATS sensitivity using guaranteed keyword "microtask" (total is locked at 82)
   await test('ATS sensitivity: adding "microtask" increases matchedKeywords and percentage', async () => {
     const base = await callAnalyze(fixtureBase);
 
@@ -124,8 +124,8 @@ async function test(name, fn) {
     const baseAts = base.analysis.atsReadiness;
     const plusAts = plus.analysis.atsReadiness;
 
-    assert.equal(baseAts.total, 80, "ATS total is not 80 (contract drift)");
-    assert.equal(plusAts.total, 80, "ATS total is not 80 (contract drift)");
+    assert.equal(baseAts.total, 82, "ATS total is not 82 (contract drift)");
+    assert.equal(plusAts.total, 82, "ATS total is not 82 (contract drift)");
 
     assert(
       !baseAts.matchedKeywords.includes("microtask"),
