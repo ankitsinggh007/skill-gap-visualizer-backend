@@ -497,6 +497,42 @@ async function runTests() {
     assert.strictEqual(res.jsonData.error.code, "BAD_REQUEST");
   });
 
+  // Test: 400 extractedSkills missing key
+  await test("400: extractedSkills missing key rejected", async () => {
+    const req = new MockReq("POST", {
+      resumeText: "JavaScript",
+      inferredSkills: [],
+      // extractedSkills key deliberately omitted
+    });
+    const res = new MockRes();
+    await analyzeHandler(req, res);
+
+    assert.strictEqual(res.statusCode, 400, "Status should be 400");
+    assert.strictEqual(res.jsonData.error.code, "VALIDATION_ERROR");
+    assert(
+      res.jsonData.error.message.includes("required"),
+      "Should mention required",
+    );
+  });
+
+  // Test: 400 inferredSkills missing key
+  await test("400: inferredSkills missing key rejected", async () => {
+    const req = new MockReq("POST", {
+      resumeText: "JavaScript",
+      extractedSkills: [],
+      // inferredSkills key deliberately omitted
+    });
+    const res = new MockRes();
+    await analyzeHandler(req, res);
+
+    assert.strictEqual(res.statusCode, 400, "Status should be 400");
+    assert.strictEqual(res.jsonData.error.code, "VALIDATION_ERROR");
+    assert(
+      res.jsonData.error.message.includes("required"),
+      "Should mention required",
+    );
+  });
+
   // Test: 400 extractedSkills not array
   await test("400: extractedSkills not array rejected", async () => {
     const req = new MockReq("POST", {

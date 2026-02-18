@@ -49,6 +49,21 @@ export function createHandler({ analyzeResumeFn }) {
       // Parse JSON body
       const body = req.body || {};
 
+      // Require extractedSkills and inferredSkills keys (must be present, can be empty arrays)
+      if (!hasOwn(body, "extractedSkills") || !hasOwn(body, "inferredSkills")) {
+        return sendError(
+          res,
+          HTTP_ERRORS.VALIDATION_ERROR,
+          "extractedSkills and inferredSkills are required",
+          {
+            missing: [
+              !hasOwn(body, "extractedSkills") ? "extractedSkills" : null,
+              !hasOwn(body, "inferredSkills") ? "inferredSkills" : null,
+            ].filter(Boolean),
+          },
+        );
+      }
+
       const {
         resumeText,
         extractedSkills = [],
