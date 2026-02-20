@@ -10,7 +10,7 @@ import {
   SkillArrayError,
 } from "../lib/analyze/normalize/normalizeSkillArrays.js";
 
-const MAX_RESUME_CHARS = 200_000;
+const MAX_RESUME_CHARS = 100_000;
 const SUPPORTED_BENCHMARKS = listSupportedBenchmarks();
 const DEFAULT_BENCHMARK = SUPPORTED_BENCHMARKS.combinations[0] || {
   role: "react",

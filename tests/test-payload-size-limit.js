@@ -2,7 +2,8 @@
 import extractHandler from "../api/extract.js";
 import analyzeHandler from "../api/analyze-resume.js";
 
-const MAX = 100_000;
+const MAX_EXTRACT = 30_000;
+const MAX_ANALYZE = 100_000;
 
 class MockRes {
   constructor() {
@@ -27,10 +28,10 @@ function assert(cond, msg) {
   if (!cond) throw new Error(msg);
 }
 
-async function testOversize(handler, name) {
+async function testOversize(handler, name, max, extraBody = {}) {
   const req = {
     method: "POST",
-    body: { resumeText: "x".repeat(MAX + 1) },
+    body: { resumeText: "x".repeat(max + 1), ...extraBody },
   };
   const res = new MockRes();
 
@@ -45,15 +46,18 @@ async function testOversize(handler, name) {
     `${name}: expected PAYLOAD_TOO_LARGE`,
   );
   assert(
-    res.jsonData?.error?.details?.maxChars === MAX,
-    `${name}: expected maxChars=${MAX}`,
+    res.jsonData?.error?.details?.maxChars === max,
+    `${name}: expected maxChars=${max}`,
   );
   console.log(`✅ ${name}: oversize -> 413 PAYLOAD_TOO_LARGE`);
 }
 
 (async function run() {
-  await testOversize(extractHandler, "POST /api/extract");
-  await testOversize(analyzeHandler, "POST /api/analyze-resume");
+  await testOversize(extractHandler, "POST /api/extract", MAX_EXTRACT);
+  await testOversize(analyzeHandler, "POST /api/analyze-resume", MAX_ANALYZE, {
+    extractedSkills: [],
+    inferredSkills: [],
+  });
   console.log("\n✅ Payload limit handler tests passed");
 })().catch((e) => {
   console.error("❌ Test failed:", e.message);

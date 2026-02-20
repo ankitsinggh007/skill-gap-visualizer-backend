@@ -21,7 +21,7 @@ Out of scope:
 - Error envelope: all error responses are exactly `{ "error": { "code", "message", "details" } }`
 - Error responses must not include any top-level keys besides `error`
 - Determinism: for the same input payload and environment configuration, responses are deterministic (tests repeat 3x)
-- `resumeText` max length: `200_000` characters
+- `resumeText` max length: `30_000` characters for `/api/extract`, `100_000` for `/api/analyze-resume`
 
 **Auth And Storage**
 
@@ -34,7 +34,7 @@ Purpose: Extract skills from raw resume text.
 Request body fields:
 | Field | Type | Required | Notes |
 | --- | --- | --- | --- |
-| `resumeText` | string | yes | Must be a non-empty string, max 200_000 chars |
+| `resumeText` | string | yes | Must be a non-empty string, max 30_000 chars |
 
 Success response `200` (exact top-level keys only):
 
@@ -51,7 +51,8 @@ Success response `200` (exact top-level keys only):
   "educationLevel": "Bachelor's",
   "tools": ["Git", "Vite"],
   "projects": ["Inventory Dashboard"],
-  "rawSummary": "Frontend developer with experience in React and tooling."
+  "rawSummary": "Frontend developer with experience in React and tooling.",
+  "extractionSource": "openai"
 }
 ```
 
@@ -67,13 +68,14 @@ Field constraints:
 - `tools`: array of strings (trimmed, non-empty)
 - `projects`: array of strings (trimmed, non-empty)
 - `rawSummary`: string (trimmed; 1–2 sentences when available)
+- `extractionSource`: string enum `"openai" | "fallback"`
 
 Error responses:
 | Status | error.code | When |
 | --- | --- | --- |
 | 400 | `VALIDATION_ERROR` | Missing or non-string `resumeText` |
 | 405 | `METHOD_NOT_ALLOWED` | Any method other than POST (also sets `Allow: POST`) |
-| 413 | `PAYLOAD_TOO_LARGE` | `resumeText` length > 200_000 (details include `maxChars`, `receivedChars`) |
+| 413 | `PAYLOAD_TOO_LARGE` | `resumeText` length > 30_000 (details include `maxChars`, `receivedChars`) |
 | 500 | `INTERNAL_ERROR` | Unexpected extraction failure |
 
 **Endpoint: POST /api/analyze-resume**
@@ -82,7 +84,7 @@ Purpose: Analyze resume skills against a benchmark and return scoring and insigh
 Request body fields:
 | Field | Type | Required | Notes |
 | --- | --- | --- | --- |
-| `resumeText` | string | yes | Must be a non-empty string, max 200_000 chars |
+| `resumeText` | string | yes | Must be a non-empty string, max 100_000 chars |
 | `extractedSkills` | array | yes | Array of `{ skill: string }` |
 | `inferredSkills` | array | yes | Array of `{ skill: string, source: string }` |
 | `role` | string | no | Optional override (see Supported Combinations) |
@@ -196,5 +198,5 @@ Error responses:
 | 400 | `VALIDATION_ERROR` | Missing/invalid `resumeText`, invalid `role`/`level`/`companyType`, or unsupported benchmark selection |
 | 400 | `BAD_REQUEST` | Invalid `extractedSkills` or `inferredSkills` array shape |
 | 405 | `METHOD_NOT_ALLOWED` | Any method other than POST (also sets `Allow: POST`) |
-| 413 | `PAYLOAD_TOO_LARGE` | `resumeText` length > 200_000 (details include `maxChars`, `receivedChars`) |
+| 413 | `PAYLOAD_TOO_LARGE` | `resumeText` length > 100_000 (details include `maxChars`, `receivedChars`) |
 | 500 | `INTERNAL_ERROR` | Internal analysis failure |

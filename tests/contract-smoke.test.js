@@ -59,6 +59,7 @@ async function runTests() {
       "tools",
       "projects",
       "rawSummary",
+      "extractionSource",
     ];
     assert.deepEqual(
       keys.sort(),
@@ -214,6 +215,18 @@ async function runTests() {
     );
   });
 
+  // Test: extractionSource is valid
+  await test("200: extractionSource is openai or fallback", async () => {
+    const req = new MockReq("POST", { resumeText: "JavaScript React" });
+    const res = new MockRes();
+    await extractHandler(req, res);
+
+    assert(
+      ["openai", "fallback"].includes(res.jsonData.extractionSource),
+      "extractionSource must be 'openai' or 'fallback'",
+    );
+  });
+
   // Test: 400 missing resumeText
   await test("400: Missing resumeText", async () => {
     const req = new MockReq("POST", {});
@@ -292,7 +305,7 @@ async function runTests() {
 
   // Test: 413 payload too large
   await test("413: Payload too large rejected", async () => {
-    const largeText = "x".repeat(200_001);
+    const largeText = "x".repeat(30_001);
     const req = new MockReq("POST", { resumeText: largeText });
     const res = new MockRes();
     await extractHandler(req, res);
@@ -645,9 +658,9 @@ async function runTests() {
   });
 
   // Test: 413 payload too large (derive limit from MAX_RESUME_CHARS)
-  // Note: MAX_RESUME_CHARS is 200_000, so we test with 200_001
+  // Note: MAX_RESUME_CHARS is 100_000, so we test with 100_001
   await test("413: Payload too large rejected", async () => {
-    const largeText = "x".repeat(200_001);
+    const largeText = "x".repeat(100_001);
     const req = new MockReq("POST", {
       resumeText: largeText,
       extractedSkills: [],

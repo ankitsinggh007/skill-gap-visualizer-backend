@@ -7,7 +7,8 @@
     "test:contract": "node tests/contract-smoke.test.js",
     "test:fixtures": "node tests/business-fixtures.snapshot.test.js",
     "test:biz:fixtures": "node tests/business-fixtures.snapshot.test.js",
-    "test:brain": "node tests/brain-qa.test.js"
+    "test:brain": "node tests/brain-qa.test.js",
+    "test:openai:errors": "node tests/openai-extraction-errors.test.js"
   },
   "dependencies": {
     "openai": "^6.9.1"
