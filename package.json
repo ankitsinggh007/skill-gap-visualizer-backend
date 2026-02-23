@@ -8,7 +8,10 @@
     "test:fixtures": "node tests/business-fixtures.snapshot.test.js",
     "test:biz:fixtures": "node tests/business-fixtures.snapshot.test.js",
     "test:brain": "node tests/brain-qa.test.js",
-    "test:openai:errors": "node tests/openai-extraction-errors.test.js"
+    "test:openai:errors": "node tests/openai-extraction-errors.test.js",
+    "test:extract:openai": "node --env-file=.env tests/runExtractionTest.js",
+    "test:endpoints": "node tests/endpoints-full.test.js",
+    "test:openai:e2e": "node --env-file=.env tests/openai-e2e.test.js"
   },
   "dependencies": {
     "openai": "^6.9.1"
