@@ -1,7 +1,7 @@
 {
   "functions": {
     "api/**/*.js": {
-      "includeFiles": ["lib/benchmark/**", "lib/dictionary/**"]
+      "includeFiles": "lib/{benchmark,dictionary}/**"
     }
   }
 }
