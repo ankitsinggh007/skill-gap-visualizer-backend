@@ -35,6 +35,7 @@ Request body fields:
 | Field | Type | Required | Notes |
 | --- | --- | --- | --- |
 | `resumeText` | string | yes | Must be a non-empty string, max 30_000 chars |
+| `turnstileToken` | string | no | Required only when Turnstile is enabled |
 
 Success response `200` (exact top-level keys only):
 
@@ -74,6 +75,7 @@ Error responses:
 | Status | error.code | When |
 | --- | --- | --- |
 | 400 | `VALIDATION_ERROR` | Missing or non-string `resumeText` |
+| 400 | `VALIDATION_ERROR` | Missing or invalid `turnstileToken` when Turnstile is enabled |
 | 405 | `METHOD_NOT_ALLOWED` | Any method other than POST (also sets `Allow: POST`) |
 | 413 | `PAYLOAD_TOO_LARGE` | `resumeText` length > 30_000 (details include `maxChars`, `receivedChars`) |
 | 500 | `INTERNAL_ERROR` | Unexpected extraction failure |

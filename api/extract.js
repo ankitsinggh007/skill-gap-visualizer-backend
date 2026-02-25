@@ -1,6 +1,7 @@
 // /api/extract.js
 
 import { runExtractionEngine } from "../lib/extraction/extractorEngine.js";
+import { verifyTurnstileToken } from "../lib/security/verifyTurnstile.js";
 import { HTTP_ERRORS, sendError } from "../lib/http/error.js";
 
 const MAX_RESUME_CHARS = 30_000;
@@ -18,7 +19,27 @@ export default async function handler(req, res) {
 
   try {
     const body = req.body || {};
-    const { resumeText } = body;
+    const { resumeText, turnstileToken } = body;
+
+    if (process.env.TURNSTILE_SECRET_KEY) {
+      const ipHeader = req.headers["x-forwarded-for"];
+      const ip =
+        typeof ipHeader === "string"
+          ? ipHeader.split(",")[0].trim()
+          : req.socket?.remoteAddress;
+
+      const verification = await verifyTurnstileToken(turnstileToken, ip);
+      if (!verification.ok) {
+        const reason =
+          verification.reason === "missing_token"
+            ? "Turnstile token is required"
+            : "Turnstile verification failed";
+        return sendError(res, HTTP_ERRORS.VALIDATION_ERROR, reason, {
+          reason: verification.reason,
+          codes: verification.codes,
+        });
+      }
+    }
 
     if (!resumeText || typeof resumeText !== "string") {
       return sendError(

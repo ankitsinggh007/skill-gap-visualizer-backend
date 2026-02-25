@@ -106,6 +106,18 @@ Required env vars:
 - `OPENAI_EXTRACTION_RETRIES=2`
 - `OPENAI_EXTRACTION_BACKOFF_MS=200`
 
+Optional (rate limiting at edge):
+
+- `UPSTASH_REDIS_REST_URL`
+- `UPSTASH_REDIS_REST_TOKEN`
+- `RATE_LIMIT_MAX=5`
+- `RATE_LIMIT_WINDOW_S=600`
+
+Optional (Turnstile CAPTCHA):
+
+- `TURNSTILE_SECRET_KEY` (backend)
+- `TURNSTILE_SITE_KEY` (frontend)
+
 ## Tests
 
 ```bash
@@ -119,6 +131,12 @@ npm run test:openai:errors
 - Set the same env vars in the Vercel project
 - Deploy
 - Smoke test `/api/extract` and `/api/analyze-resume`
+
+## Security Checklist (Deploy Time)
+
+- Rate limit `/api/extract` and `/api/analyze-resume` at the edge (Vercel Middleware + Upstash/Vercel KV); return `429` when exceeded
+- Add Turnstile CAPTCHA on the frontend and verify the token in `/api/extract` (blocks automated abuse)
+- Set OpenAI daily/monthly budget caps in the OpenAI dashboard (hard spend limit)
 
 ## Roadmap
 
