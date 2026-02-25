@@ -2,11 +2,16 @@
 
 import { runExtractionEngine } from "../lib/extraction/extractorEngine.js";
 import { verifyTurnstileToken } from "../lib/security/verifyTurnstile.js";
+import { applyCors } from "../lib/http/cors.js";
 import { HTTP_ERRORS, sendError } from "../lib/http/error.js";
 
 const MAX_RESUME_CHARS = 30_000;
 
 export default async function handler(req, res) {
+  if (applyCors(req, res)) {
+    return;
+  }
+
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
     return sendError(

@@ -118,6 +118,10 @@ Optional (Turnstile CAPTCHA):
 - `TURNSTILE_SECRET_KEY` (backend)
 - `TURNSTILE_SITE_KEY` (frontend)
 
+Optional (CORS allowlist):
+
+- `CORS_ALLOWED_ORIGINS` (comma-separated list of allowed origins)
+
 ## Tests
 
 ```bash

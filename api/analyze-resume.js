@@ -9,6 +9,7 @@ import {
   normalizeSkillArrays,
   SkillArrayError,
 } from "../lib/analyze/normalize/normalizeSkillArrays.js";
+import { applyCors } from "../lib/http/cors.js";
 
 const MAX_RESUME_CHARS = 100_000;
 const SUPPORTED_BENCHMARKS = listSupportedBenchmarks();
@@ -34,6 +35,10 @@ export function createHandler({ analyzeResumeFn }) {
   }
 
   return async function handler(req, res) {
+    if (applyCors(req, res)) {
+      return;
+    }
+
     try {
       // Only allow POST
       if (req.method !== "POST") {

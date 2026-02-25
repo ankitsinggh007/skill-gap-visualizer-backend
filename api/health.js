@@ -1,8 +1,13 @@
+import { applyCors } from "../lib/http/cors.js";
 import { HTTP_ERRORS, sendError } from "../lib/http/error.js";
 
 const version = process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 7) || "dev";
 
 export default function health(req, res) {
+  if (applyCors(req, res)) {
+    return;
+  }
+
   if (req.method !== "GET") {
     res.setHeader("Allow", "GET");
     return sendError(
