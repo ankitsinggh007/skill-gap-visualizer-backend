@@ -4,6 +4,37 @@ import { Redis } from "@upstash/redis";
 
 const DEFAULT_MAX_REQUESTS = 5;
 const DEFAULT_WINDOW_SECONDS = 600;
+const DEFAULT_ALLOWED_ORIGINS = [
+  "https://skill-gap-visualizer.vercel.app",
+  "http://localhost:5173",
+  "http://localhost:3000",
+];
+
+function getAllowedOrigins() {
+  const raw = process.env.CORS_ALLOWED_ORIGINS;
+  if (!raw) return DEFAULT_ALLOWED_ORIGINS;
+  return raw
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+}
+
+function applyCorsHeaders(request, headers) {
+  const origin = request.headers.get("origin");
+  const allowedOrigins = getAllowedOrigins();
+
+  if (origin && allowedOrigins.includes(origin)) {
+    headers.set("Access-Control-Allow-Origin", origin);
+    headers.set("Vary", "Origin");
+  }
+
+  const requestHeaders = request.headers.get("access-control-request-headers");
+  headers.set(
+    "Access-Control-Allow-Headers",
+    requestHeaders || "Content-Type",
+  );
+  headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+}
 
 function getRateLimitConfig() {
   const maxRaw = Number.parseInt(process.env.RATE_LIMIT_MAX || "", 10);
@@ -43,6 +74,12 @@ export default async function middleware(request) {
     return next();
   }
 
+  if (request.method === "OPTIONS") {
+    const headers = new Headers();
+    applyCorsHeaders(request, headers);
+    return new Response(null, { status: 204, headers });
+  }
+
   const forwardedFor = request.headers.get("x-forwarded-for");
   const ip =
     ipAddress(request) ||
@@ -56,6 +93,11 @@ export default async function middleware(request) {
 
   if (!success) {
     const retryAfter = Math.max(0, Math.ceil((reset - Date.now()) / 1000));
+    const headers = new Headers({
+      "content-type": "application/json",
+      "retry-after": String(retryAfter),
+    });
+    applyCorsHeaders(request, headers);
     return new Response(
       JSON.stringify({
         error: {
@@ -66,10 +108,7 @@ export default async function middleware(request) {
       }),
       {
         status: 429,
-        headers: {
-          "content-type": "application/json",
-          "retry-after": String(retryAfter),
-        },
+        headers,
       },
     );
   }
